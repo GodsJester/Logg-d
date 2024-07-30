@@ -138,15 +138,12 @@ async def dump(ctx, user:discord.User):
 @client.command()
 async def send_dump(ctx, user:discord.User):
     ''' sends the dumped txt file of any given user. '''
-    if user.id in targets:
-        f=open(f"logs_{user.name}.txt", "r", encoding='utf-8')
-        embed = discord.Embed(title=f"Dumped Messages from {user.name}", description=f.read(), color=0xffd700)
-        embed.set_author(icon_url=user.avatar_url, name=user.name)
-        # await ctx.send(f"Messages from {user.name}:\n{formatted_messages}")
-        await ctx.send(embed=embed)
-        # await ctx.send(f.read())
-    else:
-        await ctx.send(f"{user.name} is not in the list of users being tracked.")
+    f=open(f"logs_{user.name}.txt", "r", encoding='utf-8')
+    embed = discord.Embed(title=f"Dumped Messages from {user.name}", description=f.read(), color=0xffd700)
+    embed.set_author(icon_url=user.avatar_url, name=user.name)
+    # await ctx.send(f"Messages from {user.name}:\n{formatted_messages}")
+    await ctx.send(embed=embed)
+    # await ctx.send(f.read())
 
 @client.command()
 async def purgeOldDump(ctx, user: discord.User, number: int):
