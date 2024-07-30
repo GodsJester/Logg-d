@@ -126,7 +126,7 @@ async def dump(ctx, user:discord.User):
         messages = targets[user.id]
         if messages:
             formatted_messages = "\n".join([f"{message['time']} in {message['channel']}: {message['content']}" for message in messages])
-            f=open(f"logs_{user.name}.txt", "a")
+            f=open(f"logs_{user.name}.txt", "a", encoding='utf-8)
             f.write(formatted_messages)
             f.write("\n")
             await ctx.send(f"Dumped to logs_{user.name}.txt successfully")
@@ -139,7 +139,7 @@ async def dump(ctx, user:discord.User):
 async def send_dump(ctx, user:discord.User):
     ''' sends the dumped txt file of any given user. '''
     if user.id in targets:
-        f=open(f"logs_{user.name}.txt", "r")
+        f=open(f"logs_{user.name}.txt", "r", encoding='utf-8')
         embed = discord.Embed(title=f"Dumped Messages from {user.name}", description=f.read(), color=0xffd700)
         embed.set_author(icon_url=user.avatar_url, name=user.name)
         # await ctx.send(f"Messages from {user.name}:\n{formatted_messages}")
