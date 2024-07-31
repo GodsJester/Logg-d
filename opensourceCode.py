@@ -46,6 +46,7 @@ just_users = []
 import asyncio
 @client.command()
 async def ls_users(ctx):
+    ''' lists all users in the tracking table. (takes some time due to converting from userID) '''
     just_users.clear()
     send2 = await ctx.send("Converting user Id's... (This may take some time)\nThis message will update with the user list once it's done converting.")
 
@@ -86,7 +87,8 @@ async def list_messages(ctx, user: discord.User):
         await ctx.send(f"{user.name} is not in the list of users being tracked.")
 
 # version = discord.__version__
-import pkg_resources # This is only necessary because some fucked up discord's __version__ attribute.
+# import pkg_resources # This is only necessary because someone fucked up discord's __version__ attribute.
+# Nevermind, the version attribute works now for some reason.
 @client.command()
 async def version(ctx):
     ''' returns the discord API version that the bot is running '''
