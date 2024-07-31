@@ -126,7 +126,7 @@ async def dump(ctx, user:discord.User):
         messages = targets[user.id]
         if messages:
             formatted_messages = "\n".join([f"{message['time']} in {message['channel']}: {message['content']}" for message in messages])
-            f=open(f"logs_{user.name}.txt", "a", encoding='utf-8)
+            f=open(f"logs_{user.name}.txt", "a", encoding='utf-8')
             f.write(formatted_messages)
             f.write("\n")
             await ctx.send(f"Dumped to logs_{user.name}.txt successfully")
