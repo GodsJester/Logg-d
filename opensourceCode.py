@@ -42,13 +42,23 @@ async def acquire(ctx, user: discord.User):
         targets[user.id] = []
         await ctx.send(f"Added to table.\nLogging data for [{user.name}]")
 
+just_users = []
+import asyncio
 @client.command()
 async def ls_users(ctx):
-    ''' lists users currently being logged '''
-    send2 = await ctx.send("Calling users... (This may take some time)\nThis message will update with the user list once it's done parsing.")
-    formatted = {"Users": ", ".join([str(await client.fetch_user(user_id)) for user_id in targets.keys()])}
-    embed = discord.Embed(title="Logging Users:", description=f"{formatted}", color=0xFF5733)
-    await send2.edit(content="Parsing Complete, List below.", embed=embed)
+    just_users.clear()
+    send2 = await ctx.send("Converting user Id's... (This may take some time)\nThis message will update with the user list once it's done converting.")
+
+    for user_id in targets.keys():
+        try:
+            user = await client.fetch_user(user_id)
+            just_users.append(str(user))
+            await asyncio.sleep(.5)
+        except discord.HTTPException as e:
+            just_users.append(f"Failed to append username: {e}")
+    user_list_str = ", ".join(just_users)
+    embed = discord.Embed(title="Logging Users:", description=user_list_str, color=0xFF5733)
+    await send2.edit(content="Conversions Complete, List below.", embed=embed)
 
 @client.command()
 async def priorityWipe(ctx):
@@ -176,13 +186,14 @@ async def addAll(ctx):
     ''' adds all users, recursively, to the list of users being logged '''
     guild = ctx.guild
     members = guild.members
-    send = await ctx.send(f"__Adding Users to table__")
+    send = await ctx.send(f"__Populating User Table__")
     import time
-    time.sleep(1)
+    await asyncio.sleep(1)
     if ctx.author.id not in devs:
         await ctx.send("https://tenor.com/view/nuh-uh-nuh-gif-25159854")
     else:
         for member in members:
+            # await asyncio.sleep(.1)
             targets[member.id] = []
             await send.edit(content=f"Adding {member} to table...")
         await ctx.send("Users added successfully.")
